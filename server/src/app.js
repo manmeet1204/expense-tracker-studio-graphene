@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import expenseRoutes from './routes/expenseRoutes.js';
+import summaryRoutes from './routes/summaryRoutes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { sendSuccess } from './utils/response.js';
 
@@ -22,6 +23,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/summary', summaryRoutes);
 
 app.use('/api', notFoundHandler);
 

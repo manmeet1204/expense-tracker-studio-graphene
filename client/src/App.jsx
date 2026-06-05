@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useExpenses } from './hooks/useExpenses.js';
+import { useSummary } from './hooks/useSummary.js';
 import ExpenseForm from './components/expenses/ExpenseForm.jsx';
 import ExpenseFilters from './components/expenses/ExpenseFilters.jsx';
 import ExpenseTable from './components/expenses/ExpenseTable.jsx';
@@ -9,6 +10,7 @@ import DeleteConfirmDialog from './components/expenses/DeleteConfirmDialog.jsx';
 import LoadingSpinner from './components/ui/LoadingSpinner.jsx';
 import ErrorAlert from './components/ui/ErrorAlert.jsx';
 import EmptyState from './components/ui/EmptyState.jsx';
+import SummaryDashboard from './components/dashboard/SummaryDashboard.jsx';
 import { DEFAULT_FILTERS, filterExpenses } from './utils/filters.js';
 
 export default function App() {
@@ -21,6 +23,9 @@ export default function App() {
     updateExpense,
     removeExpense,
   } = useExpenses();
+
+  const { summary, loading: summaryLoading, error: summaryError, refetch: refetchSummary } =
+    useSummary();
 
   const [editingExpense, setEditingExpense] = useState(null);
   const [deletingExpense, setDeletingExpense] = useState(null);
@@ -37,6 +42,7 @@ export default function App() {
   const handleCreate = async (payload) => {
     setDismissedError(false);
     await createExpense(payload);
+    await refetchSummary();
   };
 
   const handleEdit = (expense) => {
@@ -52,11 +58,13 @@ export default function App() {
   const handleSaveEdit = async (payload) => {
     await updateExpense(editingExpense.id, payload);
     setEditingExpense(null);
+    await refetchSummary();
   };
 
   const handleConfirmDelete = async () => {
     await removeExpense(deletingExpense.id);
     setDeletingExpense(null);
+    await refetchSummary();
   };
 
   const handleClearFilters = () => {
@@ -76,6 +84,12 @@ export default function App() {
         <ErrorAlert
           message={visibleError}
           onDismiss={() => setDismissedError(true)}
+        />
+
+        <SummaryDashboard
+          summary={summary}
+          loading={summaryLoading}
+          error={summaryError}
         />
 
         <ExpenseForm onSubmit={handleCreate} loading={actionLoading} />

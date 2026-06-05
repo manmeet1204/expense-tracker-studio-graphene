@@ -41,3 +41,7 @@ export function updateExpense(id, payload) {
 export function deleteExpense(id) {
   return handleRequest(() => api.delete(`/expenses/${id}`));
 }
+
+export function getSummary() {
+  return handleRequest(() => api.get('/summary'));
+}
