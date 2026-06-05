@@ -1,0 +1,23 @@
+{
+  "name": "expense-tracker-server",
+  "version": "1.0.0",
+  "description": "Expense Tracker API — Studio Graphene assessment",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "uuid": "^14.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.8"
+  }
+}
