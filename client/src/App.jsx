@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useExpenses } from './hooks/useExpenses.js';
 import ExpenseForm from './components/expenses/ExpenseForm.jsx';
+import ExpenseFilters from './components/expenses/ExpenseFilters.jsx';
 import ExpenseTable from './components/expenses/ExpenseTable.jsx';
 import ExpenseCardList from './components/expenses/ExpenseCardList.jsx';
 import EditExpenseModal from './components/expenses/EditExpenseModal.jsx';
@@ -8,6 +9,7 @@ import DeleteConfirmDialog from './components/expenses/DeleteConfirmDialog.jsx';
 import LoadingSpinner from './components/ui/LoadingSpinner.jsx';
 import ErrorAlert from './components/ui/ErrorAlert.jsx';
 import EmptyState from './components/ui/EmptyState.jsx';
+import { DEFAULT_FILTERS, filterExpenses } from './utils/filters.js';
 
 export default function App() {
   const {
@@ -23,6 +25,12 @@ export default function App() {
   const [editingExpense, setEditingExpense] = useState(null);
   const [deletingExpense, setDeletingExpense] = useState(null);
   const [dismissedError, setDismissedError] = useState(false);
+  const [filters, setFilters] = useState(DEFAULT_FILTERS);
+
+  const filteredExpenses = useMemo(
+    () => filterExpenses(expenses, filters),
+    [expenses, filters]
+  );
 
   const visibleError = dismissedError ? null : error;
 
@@ -51,6 +59,10 @@ export default function App() {
     setDeletingExpense(null);
   };
 
+  const handleClearFilters = () => {
+    setFilters(DEFAULT_FILTERS);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="border-b border-gray-200 bg-white">
@@ -74,16 +86,31 @@ export default function App() {
           <EmptyState message="Add your first expense using the form above." />
         ) : (
           <>
-            <ExpenseTable
-              expenses={expenses}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
+            <ExpenseFilters
+              filters={filters}
+              onChange={setFilters}
+              onClear={handleClearFilters}
             />
-            <ExpenseCardList
-              expenses={expenses}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
+
+            {filteredExpenses.length === 0 ? (
+              <EmptyState
+                title="No matching expenses"
+                message="Try adjusting your filters or clear them to see all expenses."
+              />
+            ) : (
+              <>
+                <ExpenseTable
+                  expenses={filteredExpenses}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+                <ExpenseCardList
+                  expenses={filteredExpenses}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              </>
+            )}
           </>
         )}
       </main>
