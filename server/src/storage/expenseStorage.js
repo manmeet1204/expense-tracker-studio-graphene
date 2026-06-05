@@ -4,14 +4,20 @@ import { fileURLToPath } from 'url';
 import { AppError } from '../utils/AppError.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_FILE = path.join(__dirname, '../../data/expenses.json');
+const DEFAULT_DATA_FILE = path.join(__dirname, '../../data/expenses.json');
+
+function getDataFile() {
+  return process.env.DATA_FILE || DEFAULT_DATA_FILE;
+}
 
 async function ensureDataFile() {
+  const dataFile = getDataFile();
+
   try {
-    await fs.access(DATA_FILE);
+    await fs.access(dataFile);
   } catch {
-    await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-    await fs.writeFile(DATA_FILE, '[]', 'utf-8');
+    await fs.mkdir(path.dirname(dataFile), { recursive: true });
+    await fs.writeFile(dataFile, '[]', 'utf-8');
   }
 }
 
@@ -20,7 +26,7 @@ export async function readExpenses() {
 
   let content;
   try {
-    content = await fs.readFile(DATA_FILE, 'utf-8');
+    content = await fs.readFile(getDataFile(), 'utf-8');
   } catch (error) {
     throw new AppError('Failed to read expense data', 500);
   }
@@ -40,7 +46,7 @@ export async function readExpenses() {
 
 export async function writeExpenses(expenses) {
   try {
-    await fs.writeFile(DATA_FILE, JSON.stringify(expenses, null, 2), 'utf-8');
+    await fs.writeFile(getDataFile(), JSON.stringify(expenses, null, 2), 'utf-8');
   } catch {
     throw new AppError('Failed to write expense data', 500);
   }
