@@ -1,7 +1,18 @@
 import { useEffect, useState } from 'react';
 import { CATEGORIES } from '../../constants/categories.js';
 
+const EMPTY_FORM_STATE = {
+  amount: '',
+  category: 'Food',
+  date: '',
+  note: '',
+};
+
 function buildFormState(expense) {
+  if (!expense) {
+    return EMPTY_FORM_STATE;
+  }
+
   return {
     amount: expense.amount.toString(),
     category: expense.category,
@@ -11,7 +22,7 @@ function buildFormState(expense) {
 }
 
 export default function EditExpenseModal({ expense, isOpen, onClose, onSave, loading }) {
-  const [form, setForm] = useState(() => buildFormState(expense));
+  const [form, setForm] = useState(EMPTY_FORM_STATE);
 
   useEffect(() => {
     if (expense) {
