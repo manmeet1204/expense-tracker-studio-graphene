@@ -8,7 +8,15 @@ const api = axios.create({
 });
 
 function getErrorMessage(error) {
-  return error.response?.data?.message || error.message || 'Something went wrong';
+  if (error.response?.data?.message) {
+    return error.response.data.message;
+  }
+
+  if (error.code === 'ERR_NETWORK' || !error.response) {
+    return 'Unable to reach the server. Please check your connection and try again.';
+  }
+
+  return error.message || 'Something went wrong';
 }
 
 async function handleRequest(request) {

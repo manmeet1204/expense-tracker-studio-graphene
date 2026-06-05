@@ -19,14 +19,17 @@ export default function ExpenseForm({ onSubmit, loading }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await onSubmit({
-      amount: Number(form.amount),
-      category: form.category,
-      date: form.date,
-      note: form.note,
-    });
-
-    setForm(initialFormState);
+    try {
+      await onSubmit({
+        amount: Number(form.amount),
+        category: form.category,
+        date: form.date,
+        note: form.note,
+      });
+      setForm(initialFormState);
+    } catch {
+      // Error is surfaced by useExpenses; keep form data for retry.
+    }
   };
 
   return (
@@ -101,6 +104,7 @@ export default function ExpenseForm({ onSubmit, loading }) {
             onChange={handleChange}
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="Optional note"
+            maxLength={200}
           />
         </div>
       </div>

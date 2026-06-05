@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CATEGORIES } from '../../constants/categories.js';
+import { useEscapeKey } from '../../hooks/useEscapeKey.js';
 
 const EMPTY_FORM_STATE = {
   amount: '',
@@ -30,6 +31,8 @@ export default function EditExpenseModal({ expense, isOpen, onClose, onSave, loa
     }
   }, [expense]);
 
+  useEscapeKey(isOpen && Boolean(expense), onClose);
+
   if (!isOpen || !expense) {
     return null;
   }
@@ -42,21 +45,29 @@ export default function EditExpenseModal({ expense, isOpen, onClose, onSave, loa
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await onSave({
-      amount: Number(form.amount),
-      category: form.category,
-      date: form.date,
-      note: form.note,
-    });
+    try {
+      await onSave({
+        amount: Number(form.amount),
+        category: form.category,
+        date: form.date,
+        note: form.note,
+      });
+    } catch {
+      // Error is surfaced by useExpenses; keep modal open for retry.
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      onClick={onClose}
+    >
       <div
         className="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl"
         role="dialog"
         aria-modal="true"
         aria-labelledby="edit-expense-title"
+        onClick={(event) => event.stopPropagation()}
       >
         <h2 id="edit-expense-title" className="mb-4 text-lg font-semibold text-gray-900">
           Edit Expense
@@ -127,6 +138,7 @@ export default function EditExpenseModal({ expense, isOpen, onClose, onSave, loa
               type="text"
               value={form.note}
               onChange={handleChange}
+              maxLength={200}
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>

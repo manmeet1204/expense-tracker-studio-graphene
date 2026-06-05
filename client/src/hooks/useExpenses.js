@@ -7,8 +7,10 @@ export function useExpenses() {
   const [error, setError] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
 
-  const fetchExpenses = useCallback(async () => {
-    setLoading(true);
+  const fetchExpenses = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) {
+      setLoading(true);
+    }
     setError(null);
 
     try {
@@ -17,7 +19,9 @@ export function useExpenses() {
     } catch (err) {
       setError(err.message);
     } finally {
-      setLoading(false);
+      if (!silent) {
+        setLoading(false);
+      }
     }
   }, []);
 
@@ -31,7 +35,7 @@ export function useExpenses() {
 
     try {
       await api.createExpense(payload);
-      await fetchExpenses();
+      await fetchExpenses({ silent: true });
     } catch (err) {
       setError(err.message);
       throw err;
@@ -46,7 +50,7 @@ export function useExpenses() {
 
     try {
       await api.updateExpense(id, payload);
-      await fetchExpenses();
+      await fetchExpenses({ silent: true });
     } catch (err) {
       setError(err.message);
       throw err;
@@ -61,7 +65,7 @@ export function useExpenses() {
 
     try {
       await api.deleteExpense(id);
-      await fetchExpenses();
+      await fetchExpenses({ silent: true });
     } catch (err) {
       setError(err.message);
       throw err;

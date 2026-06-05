@@ -27,11 +27,11 @@ export default function ExpenseFilters({ filters, onChange, onClear }) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <label htmlFor="category" className="mb-1 block text-sm font-medium text-gray-700">
+          <label htmlFor="filter-category" className="mb-1 block text-sm font-medium text-gray-700">
             Category
           </label>
           <select
-            id="category"
+            id="filter-category"
             name="category"
             value={filters.category}
             onChange={handleChange}
@@ -47,11 +47,11 @@ export default function ExpenseFilters({ filters, onChange, onClear }) {
         </div>
 
         <div>
-          <label htmlFor="datePreset" className="mb-1 block text-sm font-medium text-gray-700">
+          <label htmlFor="filter-date-preset" className="mb-1 block text-sm font-medium text-gray-700">
             Date Range
           </label>
           <select
-            id="datePreset"
+            id="filter-date-preset"
             name="datePreset"
             value={filters.datePreset}
             onChange={handleChange}
@@ -67,11 +67,11 @@ export default function ExpenseFilters({ filters, onChange, onClear }) {
         {showCustomRange && (
           <>
             <div>
-              <label htmlFor="customFrom" className="mb-1 block text-sm font-medium text-gray-700">
+              <label htmlFor="filter-custom-from" className="mb-1 block text-sm font-medium text-gray-700">
                 From
               </label>
               <input
-                id="customFrom"
+                id="filter-custom-from"
                 name="customFrom"
                 type="date"
                 value={filters.customFrom}
@@ -81,11 +81,11 @@ export default function ExpenseFilters({ filters, onChange, onClear }) {
             </div>
 
             <div>
-              <label htmlFor="customTo" className="mb-1 block text-sm font-medium text-gray-700">
+              <label htmlFor="filter-custom-to" className="mb-1 block text-sm font-medium text-gray-700">
                 To
               </label>
               <input
-                id="customTo"
+                id="filter-custom-to"
                 name="customTo"
                 type="date"
                 value={filters.customTo}

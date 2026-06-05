@@ -3,6 +3,7 @@ import { formatINR } from '../../utils/currency.js';
 import LoadingSpinner from '../ui/LoadingSpinner.jsx';
 import ErrorAlert from '../ui/ErrorAlert.jsx';
 import SummaryCard from './SummaryCard.jsx';
+import CategoryPieChart from './CategoryPieChart.jsx';
 
 export default function SummaryDashboard({ summary, loading, error }) {
   if (loading) {
@@ -26,8 +27,10 @@ export default function SummaryDashboard({ summary, loading, error }) {
     : 'No expenses this month';
 
   return (
-    <section className="space-y-4">
-      <h2 className="text-lg font-semibold text-gray-900">Summary Dashboard</h2>
+    <section className="space-y-4" aria-labelledby="summary-dashboard-title">
+      <h2 id="summary-dashboard-title" className="text-lg font-semibold text-gray-900">
+        Summary Dashboard
+      </h2>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <SummaryCard
@@ -53,6 +56,8 @@ export default function SummaryDashboard({ summary, loading, error }) {
           ))}
         </div>
       </div>
+
+      <CategoryPieChart categoryTotals={summary.categoryTotals} />
     </section>
   );
 }

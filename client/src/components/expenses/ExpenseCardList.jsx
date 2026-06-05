@@ -24,14 +24,16 @@ export default function ExpenseCardList({ expenses, onEdit, onDelete }) {
             <button
               type="button"
               onClick={() => onEdit(expense)}
-              className="text-sm font-medium text-blue-600 hover:text-blue-800"
+              aria-label={`Edit ${expense.category} expense`}
+              className="min-h-11 text-sm font-medium text-blue-600 hover:text-blue-800"
             >
               Edit
             </button>
             <button
               type="button"
               onClick={() => onDelete(expense)}
-              className="text-sm font-medium text-red-600 hover:text-red-800"
+              aria-label={`Delete ${expense.category} expense`}
+              className="min-h-11 text-sm font-medium text-red-600 hover:text-red-800"
             >
               Delete
             </button>

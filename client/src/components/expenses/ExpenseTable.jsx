@@ -2,23 +2,23 @@ import { formatINR } from '../../utils/currency.js';
 
 export default function ExpenseTable({ expenses, onEdit, onDelete }) {
   return (
-    <div className="hidden overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm md:block">
+    <div className="hidden overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm md:block">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+            <th scope="col" className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
               Date
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+            <th scope="col" className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
               Category
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+            <th scope="col" className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
               Amount
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+            <th scope="col" className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
               Note
             </th>
-            <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">
+            <th scope="col" className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">
               Actions
             </th>
           </tr>
@@ -40,6 +40,7 @@ export default function ExpenseTable({ expenses, onEdit, onDelete }) {
                 <button
                   type="button"
                   onClick={() => onEdit(expense)}
+                  aria-label={`Edit ${expense.category} expense`}
                   className="mr-3 font-medium text-blue-600 hover:text-blue-800"
                 >
                   Edit
@@ -47,6 +48,7 @@ export default function ExpenseTable({ expenses, onEdit, onDelete }) {
                 <button
                   type="button"
                   onClick={() => onDelete(expense)}
+                  aria-label={`Delete ${expense.category} expense`}
                   className="font-medium text-red-600 hover:text-red-800"
                 >
                   Delete

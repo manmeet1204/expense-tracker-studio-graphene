@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useExpenses } from './hooks/useExpenses.js';
 import { useSummary } from './hooks/useSummary.js';
 import ExpenseForm from './components/expenses/ExpenseForm.jsx';
@@ -39,32 +39,35 @@ export default function App() {
 
   const visibleError = dismissedError ? null : error;
 
+  useEffect(() => {
+    if (error) {
+      setDismissedError(false);
+    }
+  }, [error]);
+
   const handleCreate = async (payload) => {
-    setDismissedError(false);
     await createExpense(payload);
-    await refetchSummary();
+    await refetchSummary({ silent: true });
   };
 
   const handleEdit = (expense) => {
-    setDismissedError(false);
     setEditingExpense(expense);
   };
 
   const handleDelete = (expense) => {
-    setDismissedError(false);
     setDeletingExpense(expense);
   };
 
   const handleSaveEdit = async (payload) => {
     await updateExpense(editingExpense.id, payload);
     setEditingExpense(null);
-    await refetchSummary();
+    await refetchSummary({ silent: true });
   };
 
   const handleConfirmDelete = async () => {
     await removeExpense(deletingExpense.id);
     setDeletingExpense(null);
-    await refetchSummary();
+    await refetchSummary({ silent: true });
   };
 
   const handleClearFilters = () => {

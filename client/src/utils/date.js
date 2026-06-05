@@ -31,18 +31,6 @@ export function getLastMonthRange() {
   return getUTCMonthRange(year, lastMonthIndex);
 }
 
-export function isDateInRange(date, from, to) {
-  if (from && date < from) {
-    return false;
-  }
-
-  if (to && date > to) {
-    return false;
-  }
-
-  return true;
-}
-
 export function getDateRangeFromPreset(preset, customFrom, customTo) {
   switch (preset) {
     case DATE_PRESETS.THIS_MONTH:
