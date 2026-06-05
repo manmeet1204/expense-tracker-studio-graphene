@@ -12,6 +12,7 @@ import ErrorAlert from './components/ui/ErrorAlert.jsx';
 import EmptyState from './components/ui/EmptyState.jsx';
 import SummaryDashboard from './components/dashboard/SummaryDashboard.jsx';
 import { DEFAULT_FILTERS, filterExpenses } from './utils/filters.js';
+import { exportExpensesToCsv } from './utils/csv.js';
 
 export default function App() {
   const {
@@ -74,6 +75,10 @@ export default function App() {
     setFilters(DEFAULT_FILTERS);
   };
 
+  const handleExportCsv = () => {
+    exportExpensesToCsv(filteredExpenses);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="border-b border-gray-200 bg-white">
@@ -107,6 +112,8 @@ export default function App() {
               filters={filters}
               onChange={setFilters}
               onClear={handleClearFilters}
+              onExportCsv={handleExportCsv}
+              canExportCsv={filteredExpenses.length > 0}
             />
 
             {filteredExpenses.length === 0 ? (

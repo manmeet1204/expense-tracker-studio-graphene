@@ -6,7 +6,7 @@ A full-stack expense tracking application built for the Studio Graphene Full Sta
 
 ## Brief Description
 
-Expense Tracker is a single-page React application backed by a REST API. It supports full expense CRUD, client-side filtering by category and date range, a UTC-based monthly summary, and a category pie chart. Data persists to a JSON file on the server.
+Expense Tracker is a single-page React application backed by a REST API. It supports full expense CRUD, client-side filtering by category and date range, a UTC-based monthly summary, a category pie chart, and CSV export of filtered expenses. Data persists to a JSON file on the server.
 
 **Implemented capabilities:**
 
@@ -20,6 +20,7 @@ Expense Tracker is a single-page React application backed by a REST API. It supp
 - Loading, error, and empty states
 - Responsive layout (table on desktop, cards on mobile)
 - JSON file persistence across server restarts
+- CSV export of currently visible (filtered) expenses
 
 ---
 
@@ -97,7 +98,7 @@ JSON Storage (expenses.json)
 | **Components** | UI — forms, tables, cards, modals, dashboard, chart |
 | **Hooks** | State management (`useExpenses`, `useSummary`, `useEscapeKey`) |
 | **Services** | Axios API client |
-| **Utils** | Currency formatting, date ranges, client-side filters |
+| **Utils** | Currency formatting, date ranges, client-side filters, CSV export |
 
 ### Key design choices
 
@@ -122,7 +123,7 @@ expense-tracker-studio-graphene/
 │   │   ├── constants/               # Category enum
 │   │   ├── hooks/                   # useExpenses, useSummary, useEscapeKey
 │   │   ├── services/                # Axios API client
-│   │   ├── utils/                   # currency, date, filters
+│   │   ├── utils/                   # currency, date, filters, csv
 │   │   ├── App.jsx
 │   │   ├── main.jsx
 │   │   └── index.css
@@ -506,6 +507,21 @@ Tests use an isolated data file (`tests/test-expenses.json`) and do not modify `
 | Currency | INR (`en-IN` locale) | Assessment decision |
 | Chart data | From `/api/summary` only | Single source of truth for monthly analytics |
 | Post-mutation refetch | Silent (no full-page spinner) | List and dashboard update without UI flash |
+| CSV export | Client-side only | Exports filtered list in browser; no backend endpoint needed |
+
+---
+
+## CSV Export
+
+Export currently visible expenses as a CSV file from the **Export CSV** button in the Filters section.
+
+| Detail | Value |
+|--------|-------|
+| Data exported | `filteredExpenses` only (respects active category and date filters) |
+| Columns | Date, Category, Amount, Note |
+| Filename | `expenses-YYYY-MM-DD.csv` (today's date) |
+| Implementation | Browser `Blob` + programmatic download — no API call |
+| Disabled when | No visible expenses match the current filters |
 
 ---
 
@@ -532,7 +548,6 @@ The following accessibility enhancements are implemented:
 
 Items not yet implemented but documented as bonus or deferred scope:
 
-- **CSV export** — client-side download of filtered expenses (bonus feature)
 - **Frontend validation** — mirror server rules with inline field-level error messages
 - **Additional tests** — summary endpoint integration test, validation error cases
 - **Focus trap in modals** — trap keyboard focus inside open dialogs

@@ -2,7 +2,7 @@ import { CATEGORIES } from '../../constants/categories.js';
 import { DATE_PRESETS } from '../../utils/date.js';
 import { hasActiveFilters } from '../../utils/filters.js';
 
-export default function ExpenseFilters({ filters, onChange, onClear }) {
+export default function ExpenseFilters({ filters, onChange, onClear, onExportCsv, canExportCsv }) {
   const handleChange = (event) => {
     const { name, value } = event.target;
     onChange({ ...filters, [name]: value });
@@ -14,15 +14,25 @@ export default function ExpenseFilters({ filters, onChange, onClear }) {
     <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
-        {hasActiveFilters(filters) && (
+        <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
-            onClick={onClear}
-            className="text-sm font-medium text-blue-600 hover:text-blue-800"
+            onClick={onExportCsv}
+            disabled={!canExportCsv}
+            className="min-h-11 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Clear filters
+            Export CSV
           </button>
-        )}
+          {hasActiveFilters(filters) && (
+            <button
+              type="button"
+              onClick={onClear}
+              className="min-h-11 text-sm font-medium text-blue-600 hover:text-blue-800"
+            >
+              Clear filters
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
