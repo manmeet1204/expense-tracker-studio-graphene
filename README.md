@@ -27,10 +27,9 @@ Expense Tracker is a single-page React application backed by a REST API. It supp
 
 | Environment | URL |
 |-------------|-----|
-| Frontend (Vercel) | _Add deployed URL here_ |
-| Backend (Render) | _Add deployed URL here_ |
-
-> Deployment targets: **Vercel** (frontend) and **Render** (backend). Update this section once live URLs are available.
+| Frontend (Vercel) | [https://expense-tracker-studio-graphene-silk.vercel.app/](https://expense-tracker-studio-graphene-silk.vercel.app/) |
+| Backend (Render) | [https://expense-tracker-studio-graphene.onrender.com](https://expense-tracker-studio-graphene.onrender.com) |
+| API Health Check | [https://expense-tracker-studio-graphene.onrender.com/api/health](https://expense-tracker-studio-graphene.onrender.com/api/health) |
 
 ---
 
@@ -222,7 +221,7 @@ cd server
 npm run dev
 ```
 
-Server starts at **http://localhost:3001**
+Server starts at **https://expense-tracker-studio-graphene.onrender.com**
 
 ### Terminal 2 — Frontend
 
@@ -231,7 +230,7 @@ cd client
 npm run dev
 ```
 
-App opens at **http://localhost:5173**
+App opens at **https://expense-tracker-studio-graphene-silk.vercel.app**
 
 ### Production build (frontend)
 
@@ -463,7 +462,7 @@ Tests use an isolated data file (`tests/test-expenses.json`) and do not modify `
 4. Start command: `npm start`
 5. Set environment variables:
    - `PORT` — provided by Render
-   - `CLIENT_URL` — your Vercel frontend URL (e.g. `https://your-app.vercel.app`)
+   - `CLIENT_URL` — `https://expense-tracker-studio-graphene-silk.vercel.app`
 
 ### Frontend — Vercel
 
@@ -472,13 +471,21 @@ Tests use an isolated data file (`tests/test-expenses.json`) and do not modify `
 3. Build command: `npm run build`
 4. Output directory: `dist`
 5. Set environment variable:
-   - `VITE_API_URL` — your Render backend URL with `/api` suffix (e.g. `https://your-api.onrender.com/api`)
+   - `VITE_API_URL` — `https://expense-tracker-studio-graphene.onrender.com/api`
 
-### Post-deployment
+### Production environment variables
 
-- Update the **Live Demo** section above with deployed URLs.
-- Verify CRUD, filters, summary, and pie chart work end-to-end in production.
-- Confirm data persists after a Render service restart.
+| Service | Variable | Value |
+|---------|----------|-------|
+| Render (backend) | `CLIENT_URL` | `https://expense-tracker-studio-graphene-silk.vercel.app` |
+| Vercel (frontend) | `VITE_API_URL` | `https://expense-tracker-studio-graphene.onrender.com/api` |
+
+### Post-deployment checklist
+
+- [x] Frontend deployed to Vercel
+- [x] Backend deployed to Render
+- [ ] Verify CRUD, filters, summary, and pie chart work end-to-end in production
+- [ ] Confirm data persists after a Render service restart
 
 ---
 
@@ -527,7 +534,6 @@ Items not yet implemented but documented as bonus or deferred scope:
 
 - **CSV export** — client-side download of filtered expenses (bonus feature)
 - **Frontend validation** — mirror server rules with inline field-level error messages
-- **Deployment URLs** — add live Vercel and Render links once deployed
 - **Additional tests** — summary endpoint integration test, validation error cases
 - **Focus trap in modals** — trap keyboard focus inside open dialogs
 - **Code splitting** — reduce frontend bundle size (Recharts adds significant weight)
@@ -544,8 +550,3 @@ Further project documentation is available in the [`docs/`](docs/) folder:
 - [`05-api-spec.md`](docs/05-api-spec.md) — API specification
 - [`09-implementation-decisions.md`](docs/09-implementation-decisions.md) — Locked implementation decisions
 
----
-
-## License
-
-ISC
